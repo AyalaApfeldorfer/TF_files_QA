@@ -1,10 +1,4 @@
-  provider "aws" {
-  region = "us-east-2"
-  access_key = "AKIATQI5LHBDSFK3J3F5"
-  secret_key = "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"
-  }  
-  
-  
+
   resource "aws_vpc" "my_vpc" {
     cidr_block = "172.16.0.0/16"
     enable_dns_hostnames = true
