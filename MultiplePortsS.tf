@@ -46,7 +46,7 @@ resource "aws_security_group" "exposed_SG22" {
 
   ingress {
     description = "TLS from VPC"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0", "0.8.8.8/0"]
     from_port = 21
     to_port = 22
     protocol = "tcp"
