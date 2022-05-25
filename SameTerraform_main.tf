@@ -48,10 +48,10 @@
     ami           = "ami-0c6a6b0e75b2b6ce7" # us-west-2
     instance_type = "t2.micro"
     associate_public_ip_address = true
-    # network_interface {
-    #   network_interface_id = aws_network_interface.foo.id
-    #   device_index         = 0
-    # }
+     network_interface {
+       network_interface_id = aws_network_interface.foo.id
+       device_index         = 0
+     }
     vpc_security_group_ids = [aws_security_group.exposed_SG.id]
     credit_specification {
       cpu_credits = "unlimited"
@@ -83,10 +83,10 @@
     ami           = "ami-0c6a6b0e75b2b6ce7" # us-west-2
     instance_type = "t2.micro"
     associate_public_ip_address = true
-    # network_interface {
-    #   network_interface_id = aws_network_interface.boo.id
-    #   device_index         = 0
-    # }
+     network_interface {
+       network_interface_id = aws_network_interface.boo.id
+       device_index         = 0
+     }
     vpc_security_group_ids = [aws_security_group.exposed_SG_35.id]
     credit_specification {
       cpu_credits = "unlimited"
