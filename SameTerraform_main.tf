@@ -71,9 +71,7 @@
     vpc_id = aws_vpc.my_vpc.id
     route {
       cidr_block = "0.0.0.0/0"
-      gateway_id = igw-1111
-
-      #aws_internet_gateway.igw-1111.id
+      gateway_id = aws_internet_gateway.igw-1111.id
     }
     tags = {
       Name = "example"
