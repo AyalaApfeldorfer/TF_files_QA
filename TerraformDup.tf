@@ -52,7 +52,7 @@
       network_interface_id = aws_network_interface.foo.id
       device_index         = 0
     }
-    vpc_security_group_ids = [aws_security_group.exposed_SG.id]
+    security_groups = [aws_security_group.exposed_SG]
     credit_specification {
       cpu_credits = "unlimited"
     }
