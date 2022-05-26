@@ -73,12 +73,6 @@ resource "aws_s3_bucket_acl" "my_aws_s3_bucket_acl_not_public" {
   acl    = "private"
 }
 
-
-resource "aws_s3_bucket_acl" "my_aws_s3_bucket_not_aclllllll" {
-  bucket = aws_s3_bucket.my_aws_s3_bucket_connected_to_acl_not_public.id
-}
-
-
 resource "aws_cloudtrail" "my_aws_cloudtrail_connected_to_bucket_without_any_acl_passed" {
   name                          = "my_aws_cloudtrail"
   s3_bucket_name                = aws_s3_bucket.my_aws_s3_bucket_without_any_acl
