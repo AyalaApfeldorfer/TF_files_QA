@@ -2,12 +2,13 @@ resource "aws_default_security_group" "default" {
   vpc_id = aws_vpc.example.id
 
   ingress {
-    protocol  = -1
-    self      = true
-    from_port = 0
-    to_port   = 0
+    description      = "TLS from VPC"
+    from_port        = 0
+    to_port          = 65535
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
   }
-}
+ }
 
 resource "aws_flow_log" "example" {
   iam_role_arn    = aws_iam_role.example.arn
