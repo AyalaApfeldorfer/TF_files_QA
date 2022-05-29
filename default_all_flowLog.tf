@@ -1,7 +1,3 @@
-resource "aws_vpc" "example" {
-  cidr_block = "10.1.0.0/16"
-}
-
 resource "aws_default_security_group" "default" {
   vpc_id = aws_vpc.example.id
 
