@@ -7,12 +7,39 @@ resource "aws_cloudtrail" "cloudtrail1_passed" {
   is_multi_region_trail = true
 }
 
-resource "aws_iam_role" "role" {
-  name = "test-role"
+resource "aws_cloudwatch_log_group" "log_group1" {
+  name = "log_group1"
+
+  tags = {
+    Environment = "production"
+    Application = "serviceA"
+  }
+}
+
+resource "aws_cloudwatch_log_metric_filter" "metric_filter1" {
+  name           = "metric_filter1"
+  pattern        = "{ ($.eventName = CreateTrail) || ($.eventName = UpdateTrail) || ($.eventName = DeleteTrail) || ($.eventName = StartLogging) || ($.eventName = StopLogging) }"
+  log_group_name = aws_cloudwatch_log_group.log_group1
+
+  metric_transformation {
+    name      = "EventCount"
+    namespace = "YourNamespace"
+    value     = "1"
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "alarm_sns_actions_enabled" {
+  metric_name = aws_cloudwatch_log_metric_filter.metric_filter1.name
+  actions_enabled = true
+  alarm_actions       = [aws_autoscaling_policy.bat.arn,aws_sns_topic.sns.arn]
+}
+
+resource "aws_iam_group" "group" {
+  name = "test-group"
 }
 
 resource "aws_iam_policy_attachment" "test-attach" {
   name       = "test-attachment"
-  roles      = [aws_iam_role.role.name]
+  groups     = [aws_iam_group.group.name]
   policy_arn = aws_iam_policy.policy.arn
 }
