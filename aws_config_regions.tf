@@ -1,3 +1,7 @@
+provider "aws" {
+  profile    = "default"
+  region     = "us-east-1"
+}
 
 resource "aws_cloudtrail" "cloudtrail1_passed" {
   name                          = "cloudtrail1_passed"
