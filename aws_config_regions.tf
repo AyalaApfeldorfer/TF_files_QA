@@ -1,9 +1,9 @@
-resource "aws_iam_group" "group" {
-  name = "test-group"
+resource "aws_iam_role" "role" {
+  name = "test-role"
 }
 
 resource "aws_iam_policy_attachment" "test-attach" {
   name       = "test-attachment"
-  groups     = [aws_iam_group.group.name]
+  roles      = [aws_iam_role.role.name]
   policy_arn = aws_iam_policy.policy.arn
 }
