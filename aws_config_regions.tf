@@ -24,6 +24,21 @@ EOF
 
 resource "aws_iam_group" "group" {
   name = "test-group"
+  description = "A test group"
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "ec2:Describe*"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    }
+  ]
+}
+EOF
 }
 
 resource "aws_iam_policy" "policy" {
