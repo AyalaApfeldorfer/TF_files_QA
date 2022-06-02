@@ -1,49 +1,35 @@
-resource "aws_iam_user" "user" {
-  name = "test-user"
+resource "aws_cloudtrail" "cloudtrail_single_region_failed" {
+  name                          = "cloudtrail_single_region_failed"
+  s3_bucket_name                = aws_s3_bucket.foo.id
+  s3_key_prefix                 = "prefix"
+  include_global_service_events = false
+  cloud_watch_logs_group_arn = aws_cloudwatch_log_group.log_group1.arn
+  is_multi_region_trail = flase
 }
-resource "aws_iam_role" "role" {
-  name = "test-role"
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Service": "ec2.amazonaws.com"
-      },
-      "Effect": "Allow",
-      "Sid": ""
-    }
-  ]
+
+resource "aws_cloudwatch_log_group" "log_group1" {
+  name = "log_group1"
+
+  tags = {
+    Environment = "production"
+    Application = "serviceA"
+  }
 }
-EOF
+
+resource "aws_cloudwatch_log_metric_filter" "metric_filter1" {
+  name           = "metric_filter1"
+  pattern        = "{ ($.eventName = CreateTrail) || ($.eventName = UpdateTrail) || ($.eventName = DeleteTrail) || ($.eventName = StartLogging) || ($.eventName = StopLogging) }"
+  log_group_name = aws_cloudwatch_log_group.log_group1
+
+  metric_transformation {
+    name      = "EventCount"
+    namespace = "YourNamespace"
+    value     = "1"
+  }
 }
-resource "aws_iam_group" "group" {
-  name = "test-group"
-}
-resource "aws_iam_policy" "policy" {
-  name        = "AWSSupportAccess"
-  description = "A test policy"
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "ec2:Describe*"
-      ],
-      "Effect": "Allow",
-      "Resource": "*"
-    }
-  ]
-}
-EOF
-}
-resource "aws_iam_policy_attachment" "test-attach" {
-  name       = "test-attachment"
-  users      = [aws_iam_user.user.name]
-  roles      = [aws_iam_role.role.name]
-  groups     = [aws_iam_group.group.name]
-  policy_arn = aws_iam_policy.policy.arn
+
+resource "aws_cloudwatch_metric_alarm" "alarm_sns_actions_enabled" {
+  metric_name = aws_cloudwatch_log_metric_filter.metric_filter1.name
+  actions_enabled = true
+  alarm_actions       = [aws_autoscaling_policy.bat.arn,aws_sns_topic.sns.arn]
 }
