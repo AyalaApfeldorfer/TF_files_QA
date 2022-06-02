@@ -3,13 +3,13 @@ provider "aws" {
   region     = "us-east-1"
 }
 
-resource "aws_cloudtrail" "cloudtrail1_passed" {
-  name                          = "cloudtrail1_passed"
+resource "aws_cloudtrail" "cloudtrail_single_region_failed" {
+  name                          = "cloudtrail_single_region_failed"
   s3_bucket_name                = aws_s3_bucket.foo.id
   s3_key_prefix                 = "prefix"
   include_global_service_events = false
   cloud_watch_logs_group_arn = aws_cloudwatch_log_group.log_group1.arn
-  is_multi_region_trail = true
+  is_multi_region_trail = flase
 }
 
 resource "aws_cloudwatch_log_group" "log_group1" {
