@@ -1,16 +1,49 @@
-resource "aws_cloudtrail" "cloudtrail_single_region_failed" {
-  name                          = "cloudtrail_single_region_failed"
-  s3_bucket_name                = aws_s3_bucket.foo.id
-  s3_key_prefix                 = "prefix"
-  include_global_service_events = false
-  cloud_watch_logs_group_arn = "${aws_cloudwatch_log_group.log_group2.arn}:*"
-  is_multi_region_trail = false
+resource "aws_iam_user" "user" {
+  name = "test-user"
 }
-resource "aws_cloudwatch_log_group" "log_group2" {
-  name = "log_group2"
-
-  tags = {
-    Environment = "production"
-    Application = "serviceA"
-  }
+resource "aws_iam_role" "role" {
+  name = "test-role"
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+}
+resource "aws_iam_group" "group" {
+  name = "test-group"
+}
+resource "aws_iam_policy" "policy" {
+  name        = "AWSSupportAccess"
+  description = "A test policy"
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "ec2:Describe*"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}
+resource "aws_iam_policy_attachment" "test-attach" {
+  name       = "AWSSupportAccess"
+  users      = [aws_iam_user.user.name]
+  roles      = [aws_iam_role.role.name]
+  groups     = [aws_iam_group.group.name]
+  policy_arn = aws_iam_policy.policy.arn
 }
