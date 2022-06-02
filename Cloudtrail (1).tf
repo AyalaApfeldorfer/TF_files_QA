@@ -6,8 +6,8 @@ resource "aws_cloudtrail" "cloudtrail_single_region_failed" {
   cloud_watch_logs_group_arn = aws_cloudwatch_log_group.log_group1.arn
   is_multi_region_trail = false
 }
-resource "aws_cloudwatch_log_group" "log_group1" {
-  name = "log_group1"
+resource "aws_cloudwatch_log_group" "log_group2" {
+  name = "log_group2"
 
   tags = {
     Environment = "production"
