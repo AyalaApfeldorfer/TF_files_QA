@@ -5,7 +5,6 @@ provider "aws" {
 
 resource "aws_cloudtrail" "cloudtrail_single_region_failed" {
   name                          = "cloudtrail_single_region_failed"
-  s3_key_prefix                 = "prefix"
   include_global_service_events = false
   cloud_watch_logs_group_arn = aws_cloudwatch_log_group.log_group1.arn
   is_multi_region_trail = flase
@@ -13,11 +12,6 @@ resource "aws_cloudtrail" "cloudtrail_single_region_failed" {
 
 resource "aws_cloudwatch_log_group" "log_group1" {
   name = "log_group1"
-
-  tags = {
-    Environment = "production"
-    Application = "serviceA"
-  }
 }
 
 resource "aws_cloudwatch_log_metric_filter" "metric_filter1" {
