@@ -1,0 +1,19 @@
+module "s3-bucket_example_server-side-encryption" {
+  source  = "operatehappy/s3-bucket/aws//examples/server-side-encryption"
+  version = "1.2.0"
+}
+
+
+resource "aws_kms_key" "mykey" {
+  description             = "This key is used to encrypt bucket objects"
+  deletion_window_in_days = 10
+}
+
+resource "aws_s3_bucket" "mybucket" {
+  bucket = "mybucket"
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "example" {
+  bucket = aws_s3_bucket.mybucket.bucket
+
+  }
