@@ -1,26 +1,18 @@
-module "s3-bucket_example_server-side-encryption" {
-  source  = "operatehappy/s3-bucket/aws//examples/server-side-encryption"
-  version = "1.2.0"
+resource "aws_cloudtrail" "my_aws_cloudtrail_connected_to_bucket_publicRead_failed" {
+  name                          = "my_aws_cloudtrail"
+  s3_bucket_name                = aws_s3_bucket.my_aws_s3_bucket_publicRead
+  cloudwatch_log_group_name     = aws_cloudwatch_log_group.yada
 }
 
-
-resource "aws_kms_key" "mykey" {
-  description             = "This key is used to encrypt bucket objects"
-  deletion_window_in_days = 10
-  enable_key_rotation = true
+resource "aws_s3_bucket" "my_aws_s3_bucket_publicRead" {
+  acl = "public-read"
 }
 
-resource "aws_s3_bucket" "mybucket" {
-  bucket = "mybucket"
-}
+resource "aws_cloudwatch_log_group" "yada" {
+  name = "Yada"
 
-resource "aws_s3_bucket_server_side_encryption_configuration" "example" {
-  bucket = aws_s3_bucket.mybucket.bucket
-
-  rule {
-    apply_server_side_encryption_by_default {
-      kms_master_key_id = aws_kms_key.mykey.arn
-      sse_algorithm     = "aws:kms"
-    }
+  tags = {
+    Environment = "production"
+    Application = "serviceA"
   }
 }
