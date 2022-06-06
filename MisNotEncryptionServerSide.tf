@@ -1,13 +1,9 @@
-resource "aws_cloudtrail" "my_aws_cloudtrail_connected_to_bucket_publicRead_failed" {
-  name                          = "my_aws_cloudtrail"
-  s3_bucket_name                = aws_s3_bucket.my_aws_s3_bucket_publicRead
-  kms_key_name                  = aws_kms_key.a
+resource "aws_cloudwatch_log_group" "example" {
+  name = "Example"
 }
-resource "aws_s3_bucket" "my_aws_s3_bucket_publicRead" {
-  acl = "public-read"
-}
-resource "aws_kms_key" "a" {
-  description             = "KMS key 1"
-  deletion_window_in_days = 10
-  customer_master_key_spec = 'SYMMETRIC_DEFAULT'
+
+resource "aws_cloudtrail" "example" {
+  # ... other configuration ...
+
+  cloud_watch_logs_group_arn = "${aws_cloudwatch_log_group.example.arn}:*" # CloudTrail requires the Log Stream wildcard
 }
