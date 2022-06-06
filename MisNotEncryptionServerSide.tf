@@ -9,4 +9,5 @@ resource "aws_s3_bucket" "my_aws_s3_bucket_publicRead" {
 resource "aws_kms_key" "a" {
   description             = "KMS key 1"
   deletion_window_in_days = 10
+  customer_master_key_spec = 'SYMMETRIC_DEFAULT'
 }
