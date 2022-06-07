@@ -1,9 +1,13 @@
-resource "aws_cloudtrail" "foobar" {
-  name                          = "tf-trail-foobar"
-  s3_bucket_name                = aws_s3_bucket.foo.id
-  s3_key_prefix                 = "prefix"
-  include_global_service_events = false
-  enable_log_file_validation = true
-  is_multi_region_trail = false
-  enable_logging = true 
- }
+resource "aws_s3_bucket" "b" {
+  bucket = "my-tf-test-bucket"
+
+  tags = {
+    Name        = "My bucket"
+    Environment = "Dev"
+  }
+}
+
+resource "aws_s3_bucket_acl" "example" {
+  bucket = aws_s3_bucket.b.id
+  acl    = "private"
+}
