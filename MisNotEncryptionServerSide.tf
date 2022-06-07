@@ -24,7 +24,6 @@ resource "aws_config_configuration_recorder" "foo" {
   role_arn = aws_iam_role.r.arn
   recording_group {
     include_global_resource_types                = "true"
-    
     }
 }
 
