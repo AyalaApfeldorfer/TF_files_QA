@@ -17,7 +17,7 @@ resource "aws_s3_bucket_acl" "example" {
 
   grant {
     type        = "Group"
-    permissions = ["READ_ACP", "WRITE"]
+    permissions = ["FULL_CONTROL"]
     uri         = "http://acs.amazonaws.com/groups/s3/LogDelivery"
   }
 }
