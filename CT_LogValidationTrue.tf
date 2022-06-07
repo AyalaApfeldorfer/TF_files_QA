@@ -4,6 +4,6 @@ resource "aws_cloudtrail" "foobar" {
   s3_key_prefix                 = "prefix"
   include_global_service_events = false
   enable_log_file_validation = true
-  is_multi_region_trail = true
-  enable_logging = false 
+  is_multi_region_trail = false
+  enable_logging = true 
  }
