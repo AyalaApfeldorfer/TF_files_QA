@@ -1,7 +1,8 @@
 resource "aws_config_configuration_recorder_status" "foo" {
   name       = aws_config_configuration_recorder.foo.name
-  is_enabled = false
+  is_enabled = true
   depends_on = [aws_config_delivery_channel.foo]
+  last_status = "SUCCESS"
   }
 
 resource "aws_iam_role_policy_attachment" "a" {
@@ -22,7 +23,7 @@ resource "aws_config_configuration_recorder" "foo" {
   name     = "example"
   role_arn = aws_iam_role.r.arn
   recording_group {
-    all_supported                 = "true"
+    all_supported                 = "false"
     }
 }
 
