@@ -9,15 +9,5 @@ resource "aws_s3_bucket" "b" {
 
 resource "aws_s3_bucket_acl" "example" {
   bucket = aws_s3_bucket.b.id
-  grant {
-    id          = data.aws_canonical_user_id.current_user.id
-    type        = "CanonicalUser"
-    permissions = ["FULL_CONTROL"]
-  }
-
-  grant {
-    type        = "Group"
-    permissions = ["FULL_CONTROL"]
-    uri         = "http://acs.amazonaws.com/groups/s3/LogDelivery"
-  }
+  acl    = "public-read"
 }
