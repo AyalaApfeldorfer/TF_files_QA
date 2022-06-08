@@ -15,7 +15,7 @@ resource "aws_cloudwatch_log_group" "log_group1" {
 }
 resource "aws_cloudwatch_log_metric_filter" "metric_filter1" {
   name           = "metric_filter1"
-  pattern        = "{ ($.eventSource = config.amazonaws.com) && (($.eventName=StopConfigurationRecorder) || ($.eventName=DeleteDeliveryChannel) || ($.eventName=PutDeliveryChannel) || ($.eventName=PutConfigurationRecorder)) }"
+  pattern        = "{ ($.eventSource = kms.amazonaws.com) && (($.eventName=DisableKey) || ($.eventName=ScheduleKeyDeletion)) }"
   log_group_name = aws_cloudwatch_log_group.log_group1
   metric_transformation {
     name      = "EventCount"
@@ -25,6 +25,22 @@ resource "aws_cloudwatch_log_metric_filter" "metric_filter1" {
 }
 resource "aws_cloudwatch_metric_alarm" "alarm_sns_actions_enabled" {
   metric_name = aws_cloudwatch_log_metric_filter.metric_filter1.name
+  actions_enabled = true
+  alarm_actions       = [aws_autoscaling_policy.bat.arn,aws_sns_topic.sns.arn]
+}
+
+resource "aws_cloudwatch_log_metric_filter" "metric_filter2" {
+  name           = "metric_filter2"
+  pattern        = "{ ($.eventName = ConsoleLogin) && ($.errorMessage = "Failedauthentication") }"
+  log_group_name = aws_cloudwatch_log_group.log_group1
+  metric_transformation {
+    name      = "EventCount"
+    namespace = "YourNamespace"
+    value     = "1"
+  }
+}
+resource "aws_cloudwatch_metric_alarm" "alarm_sns_actions_enabled2" {
+  metric_name = aws_cloudwatch_log_metric_filter.metric_filter2.name
   actions_enabled = true
   alarm_actions       = [aws_autoscaling_policy.bat.arn,aws_sns_topic.sns.arn]
 }
