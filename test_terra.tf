@@ -1,4 +1,4 @@
-{
+resource "aws_cloudtrail" "cloudtrail1_passed" {
   name                          = "cloudtrail1_passed"
   s3_bucket_name                = aws_s3_bucket.foo.id
   s3_key_prefix                 = "prefix"
