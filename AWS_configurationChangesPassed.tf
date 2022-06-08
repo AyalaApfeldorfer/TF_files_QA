@@ -15,7 +15,7 @@ resource "aws_cloudwatch_log_group" "log_group1" {
 }
 resource "aws_cloudwatch_log_metric_filter" "metric_filter1" {
   name           = "metric_filter1"
-  pattern        = "{ ($.eventSource = s3.amazonaws.com) && (($.eventName = PutBucketAcl) || ($.eventName = PutBucketPolicy) || ($.eventName = PutBucketCors) || ($.eventName = PutBucketLifecycle) || ($.eventName = PutBucketReplication) || ($.eventName = DeleteBucketPolicy) || ($.eventName = DeleteBucketCors) || ($.eventName = DeleteBucketLifecycle) || ($.eventName = DeleteBucketReplication)) }"
+  pattern        = "{ ($.eventName = AuthorizeSecurityGroupIngress) || ($.eventName = AuthorizeSecurityGroupEgress) || ($.eventName = RevokeSecurityGroupIngress) || ($.eventName = RevokeSecurityGroupEgress) || ($.eventName = CreateSecurityGroup) || ($.eventName = DeleteSecurityGroup) }"
   log_group_name = aws_cloudwatch_log_group.log_group1
   metric_transformation {
     name      = "EventCount"
@@ -28,4 +28,3 @@ resource "aws_cloudwatch_metric_alarm" "alarm_sns_actions_enabled" {
   actions_enabled = true
   alarm_actions       = [aws_autoscaling_policy.bat.arn,aws_sns_topic.sns.arn]
 }
-
