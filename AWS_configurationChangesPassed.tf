@@ -28,5 +28,3 @@ resource "aws_cloudwatch_metric_alarm" "alarm_sns_actions_enabled" {
   actions_enabled = true
   alarm_actions       = [aws_autoscaling_policy.bat.arn,aws_sns_topic.sns.arn]
 }
-
-{ ($.errorCode = "*UnauthorizedOperation") || ($.errorCode = "AccessDenied*") }
