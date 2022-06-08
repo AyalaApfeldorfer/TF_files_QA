@@ -29,21 +29,6 @@ resource "aws_cloudwatch_metric_alarm" "alarm_sns_actions_enabled" {
   alarm_actions       = [aws_autoscaling_policy.bat.arn,aws_sns_topic.sns.arn]
 }
 
-resource "aws_cloudtrail" "cloudtrail1_passed" {
-  name                          = "cloudtrail1_passed"
-  s3_bucket_name                = aws_s3_bucket.foo.id
-  s3_key_prefix                 = "prefix"
-  include_global_service_events = false
-  cloud_watch_logs_group_arn = aws_cloudwatch_log_group.log_group1.arn
-  is_multi_region_trail = true
-}
-resource "aws_cloudwatch_log_group" "log_group1" {
-  name = "log_group1"
-  tags = {
-    Environment = "production"
-    Application = "serviceA"
-  }
-}
 resource "aws_cloudwatch_log_metric_filter" "metric_filter2" {
   name           = "metric_filter2"
   pattern        = "{ ($.eventSource = config.amazonaws.com) && (($.eventName=StopConfigurationRecorder) || ($.eventName=DeleteDeliveryChannel) || ($.eventName=PutDeliveryChannel) || ($.eventName=PutConfigurationRecorder)) }"
@@ -54,7 +39,7 @@ resource "aws_cloudwatch_log_metric_filter" "metric_filter2" {
     value     = "1"
   }
 }
-resource "aws_cloudwatch_metric_alarm" "alarm_sns_actions_enabled" {
+resource "aws_cloudwatch_metric_alarm" "alarm_sns_actions_enabled2" {
   metric_name = aws_cloudwatch_log_metric_filter.metric_filter2.name
   actions_enabled = true
   alarm_actions       = [aws_autoscaling_policy.bat.arn,aws_sns_topic.sns.arn]
