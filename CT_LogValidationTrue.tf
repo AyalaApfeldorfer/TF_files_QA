@@ -1,9 +1,48 @@
-resource "aws_iam_account_password_policy" "noAllow" {
-  minimum_password_length        = 15
-  require_lowercase_characters   = true
-  require_numbers                = true
-  require_uppercase_characters   = true
-  require_symbols                = true
-  password_reuse_prevention = 25
-  max_password_age = 95
+resource "aws_iam_user" "user" {
+  name = "test-user"
 }
+resource "aws_iam_role" "role" {
+  name = "test-role"
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+}
+resource "aws_iam_group" "group" {
+  name = "test-group"
+}
+resource "aws_iam_policy" "policy" {
+  name        = "AWSSupportAccess"
+  description = "A test policy"
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "ec2:Describe*"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}
+resource "aws_iam_policy_attachment" "test-attach" {
+  name       = "AWSSupportAccess"
+  users      = [aws_iam_user.user.name]
+  roles      = [aws_iam_role.role.name]
+  groups     = [aws_iam_group.group.name]
+ }
