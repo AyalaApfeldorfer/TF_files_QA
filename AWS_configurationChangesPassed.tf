@@ -15,7 +15,7 @@ resource "aws_cloudwatch_log_group" "log_group1" {
 }
 resource "aws_cloudwatch_log_metric_filter" "metric_filter1" {
   name           = "metric_filter1"
-  pattern        = '{ ($.errorCode = \"*UnauthorizedOperation\") || ($.errorCode = \"AccessDenied*\") }'
+  pattern        = "{ ($.eventName = CreateVpc) || ($.eventName = DeleteVpc) || ($.eventName = ModifyVpcAttribute) || ($.eventName = AcceptVpcPeeringConnection) || ($.eventName = CreateVpcPeeringConnection) || ($.eventName = DeleteVpcPeeringConnection) || ($.eventName = RejectVpcPeeringConnection) || ($.eventName = AttachClassicLinkVpc) || ($.eventName = DetachClassicLinkVpc) || ($.eventName = DisableVpcClassicLink) || ($.eventName = EnableVpcClassicLink) }"
   log_group_name = aws_cloudwatch_log_group.log_group1
   metric_transformation {
     name      = "EventCount"
