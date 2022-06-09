@@ -15,7 +15,7 @@ resource "aws_cloudwatch_log_group" "log_group1" {
 }
 resource "aws_cloudwatch_log_metric_filter" "metric_filter1" {
   name           = "metric_filter1"
-  pattern        = "'{ ($.eventName = ConsoleLogin) && ($.errorMessage = \"Failedauthentication\") }'"
+  pattern        = '{ ($.eventName = ConsoleLogin) && ($.errorMessage = \"Failedauthentication\") }'
   log_group_name = aws_cloudwatch_log_group.log_group1
   metric_transformation {
     name      = "EventCount"
